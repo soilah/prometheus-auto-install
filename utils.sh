@@ -1,5 +1,7 @@
 source ./env.sh
 
+#### Check if current user is root. If not exits the program.
+
 check_root() {
 	if [ $(whoami) != "root" ]; then
 		error "Installer must be run as root. Exiting"
@@ -8,6 +10,8 @@ check_root() {
 		ok "Running as root user..."
 	fi
 }
+
+#### Check if user exists. If not it is created.
 
 check_user() {
 	USER=$1
@@ -21,6 +25,9 @@ check_user() {
 		ok "User created sucessfully"
 	fi
 }
+
+
+#### Checks if a package is installed. If not it is installed.
 
 check_package() {
 	PACKAGE=$1
@@ -37,5 +44,19 @@ check_package() {
 			error "Failed to install package."
 			exit
 		fi
+	fi
+}
+
+
+#### Runs a command and checks if it run without error.
+#### Eval is used in order to think $1 string as a command with arguments.
+
+run_notify() {
+	echo $PROGRAM
+	PROGRAM=$1
+	eval $PROGRAM &> /dev/null
+	if [ $? -ne 0 ]; then
+		error "$PROGRAM did not run sucessfully. Exiting."
+		exit
 	fi
 }
