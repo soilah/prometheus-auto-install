@@ -30,7 +30,12 @@ check_package() {
 		ok "$PACKAGE is installed..."
 	else
 		info "$PACKAGE not found. Installing..."
-		apt-get install $PACKAGE -y
-		ok "Done"
+		apt-get install $PACKAGE -y &> /dev/null
+		if [ $? -eq 0 ]; then
+			ok "Done"
+		else
+			error "Failed to install package."
+			exit
+		fi
 	fi
 }
