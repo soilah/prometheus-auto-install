@@ -20,7 +20,6 @@ check_user() {
 		adduser --no-create-home --disabled-login --shell /bin/false --comment "Prometheus" prometheus
 		ok "User created sucessfully"
 	fi
-	exit
 }
 
 check_package() {
