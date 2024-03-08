@@ -22,3 +22,15 @@ check_user() {
 	fi
 	exit
 }
+
+check_package() {
+	PACKAGE=$1
+	dpkg -s $PACKAGE &> /dev/null
+
+	if [ $? -eq 0 ]; then
+		ok "$PACKAGE is installed..."
+	else
+		info "$PACKAGE not found. Installing..."
+		apt-get install $PACKAGE -y
+		ok "Done"
+}

@@ -4,6 +4,10 @@ source ./utils.sh
 
 check_root
 check_user prometheus
+
+check_package wget
+check_package curl
+
 exit
 
 info "Downloading latest version..."
