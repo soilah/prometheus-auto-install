@@ -1,9 +1,17 @@
 #!/bin/bash
 
-# Uninstall node exporter
-sudo deluser node_exporter
+source ./utils.sh
 
-sudo rm /usr/local/bin/node_exporter
+#### First stop service
+info "Stopping and disabling node_exporter service..."
+run_notify "systemctl stop node_exporter &> /dev/null"
+run_notify "systemctl disable node_exporter"
+ok "Done"
 
-sudo rm /etc/systemd/system/node_exporter.service
-sudo systemctl daemon-reload
+#### Remove prometheus user 
+run_notify "deluser prometheus"
+
+rm /usr/local/bin/node_exporter
+
+rm /etc/systemd/system/node_exporter.service
+run_notify "systemctl daemon-reload"
