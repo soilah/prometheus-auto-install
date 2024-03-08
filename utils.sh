@@ -33,4 +33,5 @@ check_package() {
 		info "$PACKAGE not found. Installing..."
 		apt-get install $PACKAGE -y
 		ok "Done"
+	fi
 }
