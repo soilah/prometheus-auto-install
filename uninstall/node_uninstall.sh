@@ -15,3 +15,4 @@ rm /usr/local/bin/node_exporter
 
 rm /etc/systemd/system/node_exporter.service
 run_notify "systemctl daemon-reload"
+ok "Uninstalled node exporter sucessfully!"

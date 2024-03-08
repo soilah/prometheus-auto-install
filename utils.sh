@@ -21,7 +21,7 @@ check_user() {
 		info "prometheus user already exists. Continuing."
 	else
 		info "Creating prometheus user..."
-		adduser --no-create-home --disabled-login --shell /bin/false --comment "Prometheus" prometheus
+		adduser --no-create-home --disabled-login --shell /bin/false --comment "Prometheus" prometheus &> /dev/null
 		ok "User created sucessfully"
 	fi
 }
@@ -52,7 +52,6 @@ check_package() {
 #### Eval is used in order to think $1 string as a command with arguments.
 
 run_notify() {
-	echo $PROGRAM
 	PROGRAM=$1
 	eval $PROGRAM &> /dev/null
 	if [ $? -ne 0 ]; then
