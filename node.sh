@@ -1,23 +1,34 @@
 #!/bin/bash
 
-# Make node_exporter user
-sudo adduser --no-create-home --disabled-login --shell /bin/false --gecos "Node Exporter User" node_exporter
+source ./utils.sh
 
-# Download node_exporter and copy utilities to where they should be in the filesystem
-#VERSION=0.16.0
+check_root
+check_user prometheus
+exit
+
+info "Downloading latest version..."
+## Get latest version
 VERSION=$(curl https://raw.githubusercontent.com/prometheus/node_exporter/master/VERSION)
 wget https://github.com/prometheus/node_exporter/releases/download/v${VERSION}/node_exporter-${VERSION}.linux-amd64.tar.gz
+info "Extracting and copying binary to /usr/local/bin"
+#### Extract binary, copy to /usr/local/bin
 tar xvzf node_exporter-${VERSION}.linux-amd64.tar.gz
-
 sudo cp node_exporter-${VERSION}.linux-amd64/node_exporter /usr/local/bin/
-sudo chown node_exporter:node_exporter /usr/local/bin/node_exporter
 
-# systemd
-cat ./node/node_exporter.service | sudo tee /etc/systemd/system/node_exporter.service
+info "Setting permissions..."
+#### Change permissions to prometheus user
+sudo chown prometheus:prometheus /usr/local/bin/node_exporter
 
+info "Creating service file"
+#### Create service file, reload systemd, enable and start service.
+cat ./service_files/node_exporter.service | sudo tee /etc/systemd/system/node_exporter.service
+
+info "Reloading systemd, enabling and starting sercice"
 sudo systemctl daemon-reload
 sudo systemctl enable node_exporter
 sudo systemctl start node_exporter
+
+info "Removing files..."
 
 # Installation cleanup
 rm node_exporter-${VERSION}.linux-amd64.tar.gz
