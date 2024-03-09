@@ -9,4 +9,5 @@ info "Removing grafana..."
 apt-get purge grafana -y &> /dev/null
 info "Removing files..."
 rm -r /var/lib/grafana
+rm -r /etc/grafana
 ok "Done"
