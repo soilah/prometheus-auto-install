@@ -47,6 +47,24 @@ check_package() {
 	fi
 }
 
+#### This function checks if PACKAGE binary exists on PATH if MODE 
+#### is 'exists' and if PACKAGE is absent on PATH if MODE is
+#### 'absent'.
+
+check_local_package() {
+	PACKAGE=$1
+	MODE=$2
+	which $PACKAGE &> /dev/null
+	STATUS=$?
+	if [ $STATUS -ne 0 ] && [ ${MODE} = 'absent' ] ; then
+		error "Package $PACKAGE is not installed or not in PATH"
+		exit
+	elif [ $STATUS -eq 0 ] && [ ${MODE} = 'exists' ]; then
+		error "Package $PACKAGE is already installed on: $(which $PACKAGE)"  
+		exit
+	fi
+}
+
 
 #### Runs a command and checks if it run without error.
 #### Eval is used in order to think $1 string as a command with arguments.

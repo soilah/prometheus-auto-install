@@ -2,6 +2,8 @@
 
 source ./utils.sh
 
+check_local_package node_exporter absent
+
 #### First stop service
 info "Stopping and disabling node_exporter service..."
 run_notify "systemctl stop node_exporter &> /dev/null"
@@ -9,7 +11,9 @@ run_notify "systemctl disable node_exporter"
 ok "Done"
 
 #### Remove prometheus user 
+info "Removing prometheus user..."
 run_notify "deluser prometheus"
+ok "Done"
 
 rm /usr/local/bin/node_exporter
 

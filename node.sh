@@ -3,6 +3,8 @@
 source ./utils.sh
 
 check_root
+check_local_package node_exporter exists
+
 check_user prometheus
 
 check_package wget
