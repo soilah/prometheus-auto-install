@@ -10,13 +10,14 @@ run_notify "systemctl stop node_exporter &> /dev/null"
 run_notify "systemctl disable node_exporter"
 ok "Done"
 
-#### Remove prometheus user 
-info "Removing prometheus user..."
-run_notify "deluser prometheus"
+#### Remove node_exporter user 
+info "Removing node_exporter user..."
+run_notify "deluser node_exporter"
 ok "Done"
 
 rm /usr/local/bin/node_exporter
 
+info "Removing systemd service..."
 rm /etc/systemd/system/node_exporter.service
 run_notify "systemctl daemon-reload"
 ok "Uninstalled node exporter sucessfully!"

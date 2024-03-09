@@ -18,10 +18,10 @@ check_user() {
 	id $USER &> /dev/null
 
 	if [ $? -eq 0 ]; then
-		info "prometheus user already exists. Continuing."
+		info "$USER user already exists. Continuing."
 	else
-		info "Creating prometheus user..."
-		adduser --no-create-home --disabled-login --shell /bin/false --comment "Prometheus" prometheus &> /dev/null
+		info "Creating $USER user..."
+		adduser --no-create-home --disabled-login --shell /bin/false --comment "$USER user" $USER &> /dev/null
 		ok "User created sucessfully"
 	fi
 }

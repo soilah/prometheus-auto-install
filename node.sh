@@ -5,7 +5,7 @@ source ./utils.sh
 check_root
 check_local_package node_exporter exists
 
-check_user prometheus
+check_user node_exporter
 
 check_package wget
 check_package curl
@@ -22,7 +22,7 @@ sudo cp node_exporter-${VERSION}.linux-amd64/node_exporter /usr/local/bin/
 
 info "Setting permissions..."
 #### Change permissions to prometheus user
-sudo chown prometheus:prometheus /usr/local/bin/node_exporter
+sudo chown node_exporter:node_exporter /usr/local/bin/node_exporter
 
 info "Creating service file"
 #### Create service file, reload systemd, enable and start service.

@@ -1,16 +1,29 @@
 #!/bin/bash
 
+source ./utils.sh
+
+check_root
+check_local_package grafana exists
+check_package libfontconfig
+check_package musl
+
 # Download grafana
-wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_4.6.3_amd64.deb
+info "Downloading latest grafana..."
+LATEST=$(curl https://grafana.com/grafana/download?edition=oss --silent | grep wget | grep amd64.deb | grep -o -P '(?<=href=").*(?=">https)')
+wget $LATEST &> /dev/null
 
 # Install grafana
-sudo apt-get install -y adduser libfontconfig
-sudo dpkg -i grafana_4.6.3_amd64.deb
+info "Installing grafana..."
+dpkg -i grafana_latest_amd64.deb &> /dev/null
+ok "Done"
 
-# systemd
-sudo systemctl daemon-reload
-sudo systemctl enable grafana-server
-sudo systemctl start grafana-server
 
+info "Reloading systemd, enabling and starting sercice"
+systemctl daemon-reload &> /dev/null
+systemctl enable grafana-server &> /dev/null
+systemctl start grafana-server &> /dev/null
+
+info "Removing files..."
 # Installation cleanup
 rm grafana_4.6.3_amd64.deb
+ok "Grafana installed sucessfully!"

@@ -1,3 +1,4 @@
 # Ignore system files and folders - Ubuntu
 *.swp
 *.gz*
+*.deb*

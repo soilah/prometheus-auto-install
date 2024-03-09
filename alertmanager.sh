@@ -1,38 +1,60 @@
 #!/bin/bash
 
-# Make alertmanager user
-sudo adduser --no-create-home --disabled-login --shell /bin/false --gecos "Alertmanager User" alertmanager
+source ./utils.sh
 
+check_root
+check_local_package alertmanager exists
+
+check_user alertmanager
+
+check_package wget
+check_package curl
+
+
+info "Creating directories and files"
 # Make directories and dummy files necessary for alertmanager
-sudo mkdir /etc/alertmanager
-sudo mkdir /etc/alertmanager/template
-sudo mkdir -p /var/lib/alertmanager/data
-sudo touch /etc/alertmanager/alertmanager.yml
+mkdir /etc/alertmanager
+mkdir /etc/alertmanager/template
+mkdir -p /var/lib/alertmanager/data
+touch /etc/alertmanager/alertmanager.yml
+ok "Done"
 
 
-sudo chown -R alertmanager:alertmanager /etc/alertmanager
-sudo chown -R alertmanager:alertmanager /var/lib/alertmanager
+info "Setting permissions..."
+chown -R alertmanager:alertmanager /etc/alertmanager
+chown -R alertmanager:alertmanager /var/lib/alertmanager
+ok "Done"
 
-# Download alertmanager and copy utilities to where they should be in the filesystem
-#VERSION=0.15.0-rc.0
-VERSION=$(curl https://raw.githubusercontent.com/prometheus/alertmanager/master/VERSION)
-wget https://github.com/prometheus/alertmanager/releases/download/v${VERSION}/alertmanager-${VERSION}.linux-amd64.tar.gz
-tar xvzf alertmanager-${VERSION}.linux-amd64.tar.gz
 
-sudo cp alertmanager-${VERSION}.linux-amd64/alertmanager /usr/local/bin/
-sudo cp alertmanager-${VERSION}.linux-amd64/amtool /usr/local/bin/
-sudo chown alertmanager:alertmanager /usr/local/bin/alertmanager
-sudo chown alertmanager:alertmanager /usr/local/bin/amtool
+info "Downloading latest version..."
+VERSION=$(curl https://raw.githubusercontent.com/prometheus/alertmanager/master/VERSION --silent)
+wget https://github.com/prometheus/alertmanager/releases/download/v${VERSION}/alertmanager-${VERSION}.linux-amd64.tar.gz &> /dev/null
+tar xvzf alertmanager-${VERSION}.linux-amd64.tar.gz &> /dev/null
 
+info "Extracting and copying binaries to /usr/local/bin"
+cp alertmanager-${VERSION}.linux-amd64/alertmanager /usr/local/bin/
+cp alertmanager-${VERSION}.linux-amd64/amtool /usr/local/bin/
+
+info "Setting permissions..."
+chown alertmanager:alertmanager /usr/local/bin/alertmanager
+chown alertmanager:alertmanager /usr/local/bin/amtool
+
+info "Creating initial configuration files..."
 # Populate configuration files
-cat ./alertmanager/alertmanager.yml | sudo tee /etc/alertmanager/alertmanager.yml
-cat ./alertmanager/alertmanager.service | sudo tee /etc/systemd/system/alertmanager.service
+cat ./alertmanager/alertmanager.yml | tee /etc/alertmanager/alertmanager.yml &> /dev/null
 
+info "Creating service file"
+cat ./alertmanager/alertmanager.service | tee /etc/systemd/system/alertmanager.service &> /dev/null
+
+info "Reloading systemd, enabling and starting sercice"
 # systemd
-sudo systemctl daemon-reload
-sudo systemctl enable alertmanager
-sudo systemctl start alertmanager
+systemctl daemon-reload &> /dev/null
+systemctl enable alertmanager &> /dev/null
+systemctl start alertmanager &> /dev/null
 
+info "Removing files..."
 # Installation cleanup
 rm alertmanager-${VERSION}.linux-amd64.tar.gz
 rm -rf alertmanager-${VERSION}.linux-amd64
+
+info "Alertmanager installed sucessfully"
