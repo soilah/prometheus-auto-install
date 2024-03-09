@@ -13,8 +13,10 @@ LATEST=$(curl https://grafana.com/grafana/download?edition=oss --silent | grep w
 wget $LATEST &> /dev/null
 
 # Install grafana
-info "Installing grafana..."
-dpkg -i grafana_latest_amd64.deb &> /dev/null
+LOCAL_DEB=$(echo $LATEST | cut -d'/' -f 6)
+VERSION=$(echo $LATEST | cut -d'/' -f 6 | cut -d'_' -f 2)
+info "Installing grafana (version $VERSION)..."
+dpkg -i $LOCAL_DEB &> /dev/null
 ok "Done"
 
 
@@ -25,5 +27,5 @@ systemctl start grafana-server &> /dev/null
 
 info "Removing files..."
 # Installation cleanup
-rm grafana_4.6.3_amd64.deb
+rm $LOCAL_DEB
 ok "Grafana installed sucessfully!"
