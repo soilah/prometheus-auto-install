@@ -53,7 +53,7 @@ cat ./prometheus/prometheus.rules.yml | tee /etc/prometheus/prometheus.rules.yml
 
 info "Creating service file"
 #### Create service file, reload systemd, enable and start service.
-cat ./prometheus/prometheus.service | tee /etc/systemd/system/prometheus.service &> /dev/null
+cat ./service_files/prometheus.service | tee /etc/systemd/system/prometheus.service &> /dev/null
 
 info "Reloading systemd, enabling and starting sercice"
 systemctl daemon-reload &> /dev/null

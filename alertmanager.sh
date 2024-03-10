@@ -44,7 +44,7 @@ info "Creating initial configuration files..."
 cat ./alertmanager/alertmanager.yml | tee /etc/alertmanager/alertmanager.yml &> /dev/null
 
 info "Creating service file"
-cat ./alertmanager/alertmanager.service | tee /etc/systemd/system/alertmanager.service &> /dev/null
+cat ./service_files/alertmanager.service | tee /etc/systemd/system/alertmanager.service &> /dev/null
 
 info "Reloading systemd, enabling and starting sercice"
 # systemd
