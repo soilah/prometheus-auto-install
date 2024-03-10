@@ -3,6 +3,7 @@
 source ./utils.sh
 
 check_root
+check_open_port 9090
 check_local_package prometheus exists
 
 check_user prometheus

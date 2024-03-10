@@ -77,3 +77,28 @@ run_notify() {
 		exit
 	fi
 }
+
+#### Checks if a port is open ####
+
+is_port_open() {
+	PORT=$1
+	lsof -i -P -n | grep LISTEN | awk '{ sub(/.*:/, ""); sub(/\(LISTEN.*/, ""); print}' | uniq | grep $PORT &> /dev/null
+	if [ $? -eq 0 ]; then
+		echo 0
+		return 0
+	else
+		echo 1
+		return 1
+	fi	
+}
+
+check_open_port() {
+	PORT=$1
+	if [ $(is_port_open $PORT) -eq 0 ]; then
+		error "Port $PORT is already in use! Choose a custom port instead."
+		exit
+	fi
+}
+
+
+

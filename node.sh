@@ -4,6 +4,8 @@ source ./utils.sh
 
 check_root
 check_local_package node_exporter exists
+check_open_port 9100
+
 
 check_user node_exporter
 
