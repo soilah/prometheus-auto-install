@@ -5,7 +5,7 @@
 *Important:* These scripts need **root** privileges in order to run, because they involve user creation, changing permissions, manupulating systemd and others.
 
 ### To Do
-- [ ] Recreate full installation/unistall scripts.
+- [x] Recreate full installation/unistall scripts.
 - [ ] Add functionality to allow arguments for scipts (such as custom port, config directories etc.)
 - [ ] Recreate blackbox exporter scripts.
 - [ ] Add optional installation for `mqtt2prometheus`, `json_exporter`.
