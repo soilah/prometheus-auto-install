@@ -1,19 +1,24 @@
 #!/bin/bash
 
-# Ubuntu 16.04
+source ./utils.sh
 
-# Prometheus installation. It's a lousy script though.
 
-# Example:
-# chmod +x full_installation.sh
-# sudo pwd
-# ./full_installation.sh
-
+new "#####################"
+new "INSTALLING PROMETHEUS"
+new "#####################"
 ./prometheus.sh
+new "########################"
+new "INSTALLING NODE EXPORTER"
+new "########################"
 ./node.sh
-./blackbox.sh
+new "#######################"
+new "INSTALLING ALERTMANAGER"
+new "#######################"
 ./alertmanager.sh
+new "##################"
+new "INSTALLING GRAFANA"
+new "##################"
 ./grafana.sh
+#./blackbox.sh
 
-echo "Installation complete."
-echo "Visit port 3000 to view grafana dashboards."
+ok "PROMETHEUS SUITE INSTALLED SUCESSFULLY."
