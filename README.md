@@ -6,9 +6,10 @@
 
 ### To Do
 - [ ] Recreate full installation/unistall scripts.
-- [ ] Add functionality to allow arguments for scipts (such ass custom port, config directories etc.)
+- [ ] Add functionality to allow arguments for scipts (such as custom port, config directories etc.)
 - [ ] Recreate blackbox exporter scripts.
 - [ ] Add optional installation for `mqtt2prometheus`, `json_exporter`.
+- [ ] Add support for Raspberry pi (arm64)
 
 # How to Use This?
 Whether you are using this to install individual components or the full app, it is best to start scripts from the cloned repository. If you copy scripts anywhere else, the behaviour of the scripts is not guaranteed. **Note that these scripts will add Prometheus and other utilities to systemd as services, and enable the by default**.
