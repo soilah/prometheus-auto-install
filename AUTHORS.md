@@ -2,9 +2,5 @@
 
 ## Development Lead
 
-* Petar Nikolovski [@petarGitNik](https://github.com/petarGitNik)
+* Giorgos Halios [@soilah](https://github.com/soilah)
 
-## Contributors
-
-* Jeremy Fluhmann [@jfluhmann](https://github.com/jfluhmann)
-* VogelxPsycho [@VogelxPsycho](https://github.com/VogelxPsycho)
