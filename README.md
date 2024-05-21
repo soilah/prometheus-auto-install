@@ -1,6 +1,6 @@
 # Prometheus Installation Script for Debian. Tested on Debian 12 (Bookworm)
 
-**Important:** This is a fork of a project i found to be useful for auto installing and configuring prometheus suit programs. I want to expand it to have a nicer output, remove deprecated functions, add some important checks and add some more features... in time.
+**Important:** This was a fork of a project i found to be useful for auto installing and configuring prometheus suit programs. After some time, i changed it and expanded it in a way that can now be a project of its own. After making it into a robust auto installation/uninstallation bundle of scripts, the idea is to expand with more features such as servie migration, managing and more.
 
 *Important:* These scripts need **root** privileges in order to run, because they involve user creation, changing permissions, manupulating systemd and others.
 
