@@ -1,8 +1,5 @@
-# 0.1.0 - 28.7.2018.
+# 0.1.0 - 21.5.2024.
 
 ## General
 
-* Scripts now install **current** version of Alertmanager, Prometheus, Node Exporter, and Blackbox Exporter, thanks to [@jfluhmann](https://github.com/jfluhmann)
-* Added authors file
-* License added
-* First release made
+* This was originally a fork of a repo created by https://github.com/petarnikolovski. But due to the complex and expanded nature of the forked repo, i decided to create a new one and make it public.
