@@ -21,9 +21,9 @@ if [ -d "/etc/prometheus" ]; then
 	warn "Default configuration directory /etc/prometheus already exists..."
 	NEW_CONF_DIR=false
 else
-	mkdir /etc/prometheus
+	mkdir -p /etc/prometheus/rules
 	touch /etc/prometheus/prometheus.yml
-	touch /etc/prometheus/prometheus.rules.yml
+	touch /etc/prometheus/rules/rules.yml
 fi
 
 
@@ -73,7 +73,7 @@ if [ "$NEW_CONF_DIR" = true ]; then
 	info "Creating initial configuration files..."
 	# Populate configuration files
 	cat ./prometheus/prometheus.yml | tee /etc/prometheus/prometheus.yml &> /dev/null
-	cat ./prometheus/prometheus.rules.yml | tee /etc/prometheus/prometheus.rules.yml &> /dev/null
+	cat ./prometheus/prometheus.rules.yml | tee /etc/prometheus/rules/rules.yml &> /dev/null
 fi
 
 info "Setting permissions..."
