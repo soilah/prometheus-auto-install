@@ -8,7 +8,7 @@
 - [x] Recreate full installation/unistall scripts (blackbox pending).
 - [ ] Add functionality to allow arguments for scipts (such as custom port, config directories etc.)
 - [ ] Recreate blackbox exporter scripts.
-- [ ] Add optional installation for `mqtt2prometheus`, `json_exporter`.
+- [ ] Add optional installation for `mqtt2prometheus`, `json_exporter`, `victoriametrics`.
 - [ ] Add support for Raspberry pi (arm64)
 
 # How to Use This?
