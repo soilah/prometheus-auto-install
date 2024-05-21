@@ -2,6 +2,7 @@
 
 source ./utils.sh
 
+check_root
 
 new "#######################"
 new "UNINSTALLING PROMETHEUS"

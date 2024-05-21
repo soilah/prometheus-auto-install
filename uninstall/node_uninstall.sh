@@ -2,6 +2,7 @@
 
 source ./utils.sh
 
+check_root
 check_local_package node_exporter absent
 
 #### First stop service

@@ -12,10 +12,28 @@ check_package curl
 
 info "Creating directories and files"
 # Make directories and dummy files necessary for prometheus
-mkdir /etc/prometheus
-mkdir /var/lib/prometheus
-touch /etc/prometheus/prometheus.yml
-touch /etc/prometheus/prometheus.rules.yml
+
+
+NEW_CONF_DIR=true
+NEW_DATA_DIR=true
+
+if [ -d "/etc/prometheus" ]; then
+	warn "Default configuration directory /etc/prometheus already exists..."
+	NEW_CONF_DIR=false
+else
+	mkdir /etc/prometheus
+	touch /etc/prometheus/prometheus.yml
+	touch /etc/prometheus/prometheus.rules.yml
+fi
+
+
+if [ -d "/var/lib/prometheus" ]; then
+	warn "Default data directory /var/lib/prometheus already exists..."
+	NEW_DATA_DIR=false
+else
+	mkdir /var/lib/prometheus
+fi
+
 ok "Done"
 
 info "Setting permissions..."
@@ -25,13 +43,11 @@ chown prometheus:prometheus /var/lib/prometheus
 ok "Done"
 
 
-
 ## Get cpu architecture (amd64 for pc, arm64 for rpi)
 ARCH=$(check_arch)
 if [ $ARCH == "arm64" ]; then
 	info "Installing for Raspberry pi..."
 fi
-
 
 
 ## Get latest version
@@ -48,9 +64,17 @@ tar xvzf prometheus-${VERSION}.linux-${ARCH}.tar.gz &> /dev/null
 cp prometheus-${VERSION}.linux-${ARCH}/prometheus /usr/local/bin/
 cp prometheus-${VERSION}.linux-${ARCH}/promtool /usr/local/bin/
 
-info "Creating directories..."
-cp -r prometheus-${VERSION}.linux-${ARCH}/consoles /etc/prometheus
-cp -r prometheus-${VERSION}.linux-${ARCH}/console_libraries /etc/prometheus
+
+if [ "$NEW_CONF_DIR" = true ]; then
+	info "Creating directories..."
+	cp -r prometheus-${VERSION}.linux-${ARCH}/consoles /etc/prometheus
+	cp -r prometheus-${VERSION}.linux-${ARCH}/console_libraries /etc/prometheus
+
+	info "Creating initial configuration files..."
+	# Populate configuration files
+	cat ./prometheus/prometheus.yml | tee /etc/prometheus/prometheus.yml &> /dev/null
+	cat ./prometheus/prometheus.rules.yml | tee /etc/prometheus/prometheus.rules.yml &> /dev/null
+fi
 
 info "Setting permissions..."
 # Assign the ownership of the tools above to prometheus user
@@ -59,11 +83,6 @@ chown -R prometheus:prometheus /etc/prometheus/console_libraries
 chown prometheus:prometheus /usr/local/bin/prometheus
 chown prometheus:prometheus /usr/local/bin/promtool
 
-
-info "Creating initial configuration files..."
-# Populate configuration files
-cat ./prometheus/prometheus.yml | tee /etc/prometheus/prometheus.yml &> /dev/null
-cat ./prometheus/prometheus.rules.yml | tee /etc/prometheus/prometheus.rules.yml &> /dev/null
 
 info "Creating service file"
 #### Create service file, reload systemd, enable and start service.

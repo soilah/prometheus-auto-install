@@ -11,12 +11,23 @@ check_package wget
 check_package curl
 
 
+NEW_CONF_DIR=true
 info "Creating directories and files"
 # Make directories and dummy files necessary for alertmanager
-mkdir /etc/alertmanager
-mkdir /etc/alertmanager/template
-mkdir -p /var/lib/alertmanager/data
-touch /etc/alertmanager/alertmanager.yml
+
+if [ -d "/etc/alertmanager" ]; then
+	warn "Alertmanager default configuration folder /etc/alertmanager already exists... Not creating it"
+	NEW_CONF_DIR=false
+else
+	mkdir /etc/alertmanager
+	mkdir /etc/alertmanager/template
+	touch /etc/alertmanager/alertmanager.yml
+fi
+if [ -d "/var/lib/alertmanager" ]; then
+	warn "Alertmanager default library folder /var/lib/alertmanager already exists... Not creating it"
+else	
+	mkdir /var/lib/alertmanager
+fi
 ok "Done"
 
 
@@ -52,9 +63,11 @@ info "Setting permissions..."
 chown alertmanager:alertmanager /usr/local/bin/alertmanager
 chown alertmanager:alertmanager /usr/local/bin/amtool
 
-info "Creating initial configuration files..."
 # Populate configuration files
-cat ./alertmanager/alertmanager.yml | tee /etc/alertmanager/alertmanager.yml &> /dev/null
+if [ "$NEW_CONF_DIR" = true ]; then
+	info "Creating initial configuration files..."
+	cat ./alertmanager/alertmanager.yml | tee /etc/alertmanager/alertmanager.yml &> /dev/null
+fi
 
 info "Creating service file"
 cat ./service_files/alertmanager.service | tee /etc/systemd/system/alertmanager.service &> /dev/null

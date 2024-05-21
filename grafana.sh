@@ -4,7 +4,7 @@ source ./utils.sh
 
 check_root
 check_open_port 3000
-check_local_package grafana exists
+check_local_package grafana-server exists
 check_package libfontconfig
 check_package musl
 
@@ -18,6 +18,27 @@ if [ $ARCH == "arm64" ]; then
 fi
 
 
+if [ -d "/etc/grafana" ]; then
+	warn "Grafana default config directory (/etc/grafana) already exists... proceed with caution"
+	PROCEED=$(prompt_yes_no "Do you want to proceed? (yes/no): ")
+	if [ $PROCEED == 'no' ]; then
+		error 'Aborting installation.'
+		exit
+	else
+		ok 'Proceeding installation.'
+	fi
+fi
+
+if [ -d "/var/lib/grafana" ]; then
+	warn "Grafana default data directory (/var/lib/grafana) already exists... proceed with caution"
+	PROCEED=$(prompt_yes_no "Do you want to proceed? (yes/no): ")
+	if [ $PROCEED == 'no' ]; then
+		error 'Aborting installation.'
+		exit
+	else
+		ok 'Proceeding installation.'
+	fi
+fi
 
 # Download grafana
 info "Downloading latest grafana..."
