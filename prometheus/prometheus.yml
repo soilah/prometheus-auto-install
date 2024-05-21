@@ -16,20 +16,6 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9100']
 
-  - job_name: 'blackbox_exporter'
-    scrape_interval: 5s
-    static_configs:
-      - targets:
-        - localhost:9115
-        labels:
-          group: 'production'
-
-  - job_name: 'grafana'
-    scrape_interval: 5s
-    static_configs:
-      - targets:
-        - localhost:3000
-
 alerting:
   alertmanagers:
   - static_configs:
