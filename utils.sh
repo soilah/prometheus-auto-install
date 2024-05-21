@@ -116,5 +116,16 @@ check_open_port() {
 	fi
 }
 
+#### Prompts a message to user to which the answer must be yes or no
+prompt_yes_no() {
+	MESSAGE=$1
+	
+	read -p "$MESSAGE" ANS
+	while [[ $ANS != 'yes' && $ANS != "no" ]];
+	do
+		echo "Type 'yes' or 'no'" > /dev/stderr
+		read -p "$MESSAGE" ANS
+	done
 
-
+	echo $ANS
+}
