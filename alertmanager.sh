@@ -4,11 +4,16 @@ source ./utils.sh
 
 check_root
 check_local_package alertmanager exists
+check_package lsof
+check_open_port 9093
+check_open_port 9094
 
 check_user alertmanager
 
 check_package wget
 check_package curl
+
+
 
 
 NEW_CONF_DIR=true

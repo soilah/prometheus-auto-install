@@ -98,7 +98,6 @@ run_notify() {
 
 is_port_open() {
 	PORT=$1
-	check_package lsof
 	lsof -i -P -n | grep LISTEN | awk '{ sub(/.*:/, ""); sub(/\(LISTEN.*/, ""); print}' | uniq | grep $PORT &> /dev/null
 	if [ $? -eq 0 ]; then
 		echo 0

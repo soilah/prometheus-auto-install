@@ -3,6 +3,7 @@
 source ./utils.sh
 
 check_root
+check_package lsof
 check_open_port 3000
 check_local_package grafana-server exists
 check_package libfontconfig
